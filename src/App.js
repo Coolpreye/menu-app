@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import './Main.css';
+import { Categories } from './Categories';
+import menu from './data';
+import { Menu } from './Menu';
+const allCategories = ['all', ...new Set(menu.map((item) => item.category))];
 
 function App() {
+  const [menuItems, setMenuItems] = useState(menu);
+  const [categories, setCategories] = useState(allCategories);
+
+  const filterItems = (category) => {
+    if (category === 'all') {
+      setMenuItems(menu);
+      return;
+    }
+    const newItems = menu.filter((item) => item.category === category);
+    setMenuItems(newItems);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <div className="py-20 px-5 w-full mx-auto">
+        <h2 
+          className="text-3xl md:text-4xl text-center tracking-wider font-bold text-gray-800">Our Menu
+        </h2>
+        <div className="flex justify-center">
+            <div className="h-1 w-24 bg-clr1 my-3"></div>
+        </div>
+        <div className="mt-2">
+          <Categories filterItems={filterItems} categories={categories} />
+        </div>
+        <Menu items={menuItems} />
+      </div>
+    </React.Fragment>
   );
 }
 
